@@ -21,7 +21,7 @@ class RoomState extends Schema {
     const player = new Player();
     player.userId = data.userId;
     player.name = data.name;
-    player.position = new Vec2({ x: -80, y: 50 });
+    player.position = new Vec2({ x: -90, y: 50 });
     this.players.set(player.userId, player);
     return player;
   }
@@ -55,6 +55,10 @@ export class GreenVillage extends Room<RoomState> {
     });
 
     this.onMessage('endMove', (client, message) => {
+      this.state.getPlayer(client.userData.userId).position = new Vec2(
+        message.endPosition,
+      );
+
       this.broadcast(
         'endMove',
         {
