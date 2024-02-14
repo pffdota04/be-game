@@ -71,6 +71,21 @@ export class GreenVillage extends Room<RoomState> {
         },
       );
     });
+
+    this.onMessage('chat', (client, message) => {
+      console.log('Chat ', message.content);
+      this.broadcast(
+        'playerChat',
+        {
+          content: message.content,
+          name: this.state.getPlayer(client.userData.userId).name,
+          userId: client.userData.userId,
+        },
+        {
+          except: client,
+        },
+      );
+    });
   }
 
   onJoin(client: Client, options) {
